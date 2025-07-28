@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Chatbot from "./Chatbot":
 
 export default function Home() {
   return (
@@ -21,7 +22,7 @@ export default function Home() {
         <h2 className="text-xl text-center text-blue-700 dark:text-blue-300 font-semibold mb-4">
           Building Smarter Products
         </h2>
-
+        <Chatbot />
         {/* Resume Download Button */}
         <a
           href="/ParthKhungarResume.pdf"
