@@ -22,7 +22,7 @@ export default function Home() {
         <h2 className="text-xl text-center text-blue-700 dark:text-blue-300 font-semibold mb-4">
           Building Smarter Products
         </h2>
-        <Chatbot />
+        
         {/* Resume Download Button */}
         <a
           href="/ParthKhungarResume.pdf"
@@ -31,7 +31,7 @@ export default function Home() {
         >
           Download Resume
         </a>
-
+        <Chatbot />
         {/* Short About */}
         <p className="max-w-xl text-center text-gray-700 dark:text-gray-300 mt-4">
           AI-empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
