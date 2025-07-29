@@ -46,6 +46,15 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 1.0 }}
           >
             Building Smarter Products
+          <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            style={{ width: 200, height: 100, background: 'orange', margin: '2rem auto' }}
+          >
+           Test Animation Box
+          </motion.div>
+
           </motion.h2>
           {/* Animated Resume Button */}
           <motion.a
