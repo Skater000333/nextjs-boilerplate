@@ -5,14 +5,32 @@ import { motion } from "framer-motion";
 import FunFactsCarousel from "./FunFactsCarousel";
 import SkillsBar from "./SkillsBar";
 import ProjectsSection from "./ProjectsSection";
-import ThemeToggle from "./ThemeToggle";
-
-
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 bg-white dark:bg-black">
-      <ThemeToggle />
+    <div
+      className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20"
+      style={{
+        background: "linear-gradient(135deg, #f0f6ff 0%, #c3dafe 100%)",
+        minHeight: "100vh",
+        position: "relative"
+      }}
+    >
+      {/* Animated SVG Blobs */}
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <svg width="100%" height="100%">
+          <circle cx="30%" cy="30%" r="180" fill="#a7f3d0" fillOpacity="0.28">
+            <animate attributeName="cy" values="30%;40%;30%" dur="7s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="70%" cy="70%" r="250" fill="#93c5fd" fillOpacity="0.19">
+            <animate attributeName="cy" values="70%;65%;70%" dur="8s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="80%" cy="15%" r="120" fill="#818cf8" fillOpacity="0.13">
+            <animate attributeName="cy" values="15%;25%;15%" dur="6s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+
       <main className="flex flex-col gap-8 row-start-2 items-center">
         {/* Animated Hero Section */}
         <motion.div
@@ -39,7 +57,7 @@ export default function Home() {
 
           {/* Animated Name */}
           <motion.h1
-            className="text-4xl font-bold text-center text-gray-900 dark:text-white"
+            className="text-4xl font-bold text-center text-gray-900"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
@@ -48,7 +66,7 @@ export default function Home() {
           </motion.h1>
           {/* Animated Tagline */}
           <motion.h2
-            className="text-xl text-center text-blue-700 dark:text-blue-300 font-semibold mb-4"
+            className="text-xl text-center text-blue-700 font-semibold mb-4"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.0 }}
@@ -77,14 +95,14 @@ export default function Home() {
         <Chatbot />
 
         {/* Short About */}
-        <p className="max-w-xl text-center text-gray-700 dark:text-gray-300 mt-4">
-          AI- empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
+        <p className="max-w-xl text-center text-gray-700 mt-4">
+          AI-empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
         </p>
       </main>
 
       <footer className="row-start-3 flex gap-8 flex-wrap items-center justify-center mt-10">
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4 text-blue-700 dark:text-blue-300"
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4 text-blue-700"
           href="https://linkedin.com/in/parth-khungar-6a1a3217b"
           target="_blank"
           rel="noopener noreferrer"
@@ -99,7 +117,7 @@ export default function Home() {
           LinkedIn
         </a>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4 text-blue-700 dark:text-blue-300"
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4 text-blue-700"
           href="mailto:parthkhungar33@gmail.com"
           target="_blank"
           rel="noopener noreferrer"
