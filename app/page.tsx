@@ -49,16 +49,6 @@ export default function Home() {
             Building Smarter Products
           </motion.h2>
 
-          {/* Test Animation Box OUTSIDE the h2 */}
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            style={{ width: 200, height: 100, background: 'orange', margin: '2rem auto' }}
-          >
-            Test Animation Box
-          </motion.div>
-
           {/* Animated Resume Button */}
           <motion.a
             href="/ParthKhungarResume.pdf"
