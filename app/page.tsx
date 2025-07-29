@@ -65,11 +65,8 @@ export default function Home() {
           </motion.a>
         </motion.div>
 
-        <div>Carousel should appear below this line!</div>
         <FunFactsCarousel />
-        <div>Carousel should appear above this line!</div>
-
-
+        
         <Chatbot />
 
         {/* Short About */}
