@@ -21,7 +21,14 @@ export default function Chatbot() {
       body: JSON.stringify({ messages: newMessages })
     });
     const data = await res.json();
-    const reply = data.choices?.[0]?.message?.content || "Sorry, something went wrong!";
+    console.log('API response:', data);
+
+    // Improved error handling!
+    const reply =
+      data.choices?.[0]?.message?.content ||
+      data.error ||
+      JSON.stringify(data) ||
+      "Sorry, something went wrong!";
     setMessages([...newMessages, { role: "assistant", content: reply }]);
     setLoading(false);
   };
