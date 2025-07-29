@@ -52,7 +52,8 @@ Education:
 - Class X, Bhavan Vidyalaya, Chandigarh (9.4 CGPA)
 
 Awards, Leadership & Social Impact:
-- State & District Roller Hockey Captain (2015–present): 2 Gold, 4 Silver, 2 Bronze (State), captained to Nationals Silver.
+- National Gold Medalist in Roller Skating, has been playing since class 5th and has won more than 20 National medals
+- State & District Roller Hockey Captain (2015–present): under his leadership team has won 2 Gold, 4 Silver, 2 Bronze (State), captained to Nationals Silver.
 - Community Educator: Initiated & scaled weekend teaching for underprivileged kids, enabled 60+ school enrollments.
 - Fest Ops Lead (PEC Fest): Managed budgeting, vendors, logistics for flagship event.
 
