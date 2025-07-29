@@ -3,6 +3,7 @@ import Image from "next/image";
 import Chatbot from "./Chatbot";
 import { motion } from "framer-motion";
 import FunFactsCarousel from "./FunFactsCarousel";
+import SkillsBar from "./SkillsBar";
 
 export default function Home() {
   return (
@@ -66,7 +67,7 @@ export default function Home() {
         </motion.div>
 
         <FunFactsCarousel />
-        
+        <SkillsBar />
         <Chatbot />
 
         {/* Short About */}
