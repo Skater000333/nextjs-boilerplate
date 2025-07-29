@@ -1,70 +1,39 @@
-"use client";
-import React, { useState } from "react";
+import { NextRequest, NextResponse } from 'next/server';
 
-export default function Chatbot() {
-  const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hi! I'm Parth's AI Assistant. Ask me anything about Parth's experience, projects, or skills!" }
-  ]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+export async function POST(req: NextRequest) {
+  try {
+    const { messages } = await req.json();
 
-  const sendMessage = async () => {
-    if (!input) return;
-    const newMessages = [...messages, { role: "user", content: input }];
-    setMessages(newMessages);
-    setInput("");
-    setLoading(true);
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: "Missing API key" }, { status: 500 });
+    }
 
-    const res = await fetch("/api/chat", {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: newMessages })
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "mistralai/mixtral-8x7b-instruct",
+        messages: [
+          { role: "system", content: "You are Parth's AI assistant. Answer questions based on Parth's resume and professional background, and keep responses friendly and concise." },
+          ...messages
+        ],
+        max_tokens: 400,
+      }),
     });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      return NextResponse.json({ error: `OpenRouter error: ${res.status} - ${errorText}` }, { status: 500 });
+    }
+
     const data = await res.json();
-    console.log('API response:', data);
+    return NextResponse.json(data);
 
-    // Improved error handling!
-    const reply =
-      data.choices?.[0]?.message?.content ||
-      data.error ||
-      JSON.stringify(data) ||
-      "Sorry, something went wrong!";
-    setMessages([...newMessages, { role: "assistant", content: reply }]);
-    setLoading(false);
-  };
-
-  return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-xl mx-auto mt-8">
-      <h3 className="font-bold text-lg mb-2">💬 Ask Parth’s AI</h3>
-      <div className="h-48 overflow-y-auto border p-2 mb-2 rounded bg-gray-50">
-        {messages.map((msg, i) => (
-          <div key={i} className={msg.role === "user" ? "text-right" : "text-left"}>
-            <span className={msg.role === "user" ? "font-semibold text-blue-600" : "font-semibold text-gray-600"}>
-              {msg.role === "user" ? "You" : "AI"}: 
-            </span>{" "}
-            {msg.content}
-          </div>
-        ))}
-        {loading && <div className="text-gray-500 mt-2">Typing…</div>}
-      </div>
-      <div className="flex gap-2">
-        <input
-          className="border rounded p-2 flex-1"
-          type="text"
-          value={input}
-          disabled={loading}
-          placeholder="Type your question here..."
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && sendMessage()}
-        />
-        <button
-          className="bg-blue-600 text-white rounded px-4 py-2"
-          disabled={loading || !input}
-          onClick={sendMessage}
-        >
-          Send
-        </button>
-      </div>
-    </div>
-  );
+  } catch (err: any) {
+    return NextResponse.json({ error: "API error: " + (err.message || err.toString()) }, { status: 500 });
+  }
 }
