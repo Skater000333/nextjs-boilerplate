@@ -4,6 +4,8 @@ import Chatbot from "./Chatbot";
 import { motion } from "framer-motion";
 import FunFactsCarousel from "./FunFactsCarousel";
 import SkillsBar from "./SkillsBar";
+import ProjectsSection from "./ProjectsSection";
+
 
 export default function Home() {
   return (
@@ -68,6 +70,7 @@ export default function Home() {
 
         <FunFactsCarousel />
         <SkillsBar />
+        <ProjectsSection />
         <Chatbot />
 
         {/* Short About */}
