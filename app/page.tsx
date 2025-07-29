@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Chatbot from "./Chatbot";
 import { motion } from "framer-motion";
+import FunFactsCarousel from "./FunFactsCarousel";
 
 export default function Home() {
   return (
@@ -63,6 +64,11 @@ export default function Home() {
             Download Resume
           </motion.a>
         </motion.div>
+
+        <div>Carousel should appear below this line!</div>
+        <FunFactsCarousel />
+        <div>Carousel should appear above this line!</div>
+
 
         <Chatbot />
 
