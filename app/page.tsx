@@ -77,7 +77,7 @@ export default function Home() {
 
         {/* Short About */}
         <p className="max-w-xl text-center text-gray-700 dark:text-gray-300 mt-4">
-          AI-empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
+          AI- empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
         </p>
       </main>
 
