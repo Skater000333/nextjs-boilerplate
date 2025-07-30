@@ -16,6 +16,7 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Ask for name first, then purpose
   const handleIntroSubmit = async () => {
     if (step === 0 && input.trim()) {
       setIntro((i) => ({ ...i, name: input.trim() }));
@@ -31,17 +32,21 @@ export default function Chatbot() {
           content: `Welcome, ${input.trim()}! Thanks for visiting Parth's portfolio. I see you're here for: "${input.trim()}". Ask me anything about Parth's career, achievements, or personality!`,
         },
       ]);
-      // Log visitor for analytics
+      // Save visitor info to your backend for analytics
       try {
         await fetch("/api/visitor", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: intro.name, purpose: input.trim() }),
         });
-      } catch {}
+      } catch (e) {
+        // Silently fail if API isn't set up or fails
+        // console.error("Visitor log failed:", e);
+      }
     }
   };
 
+  // Main chat function
   const sendMessage = async (messageOverride?: string) => {
     const question = messageOverride ?? input;
     if (!question) return;
@@ -69,6 +74,7 @@ export default function Chatbot() {
     setLoading(false);
   };
 
+  // UI
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-xl mx-auto mt-8">
       <h3 className="font-bold text-lg mb-2">💬 Ask Parth’s AI</h3>
@@ -100,6 +106,7 @@ export default function Chatbot() {
         </div>
       ) : (
         <>
+          {/* Suggested Questions */}
           <div className="mb-3 flex flex-wrap gap-2 justify-center">
             {suggestedQuestions.map((q) => (
               <button
