@@ -1,55 +1,34 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
-// Minimal suggestions
 const suggestedQuestions = [
   "What is Parth’s greatest achievement?",
-  "What does Parth do for fun?",
+  "Describe Parth’s leadership style.",
 ];
 
 export default function Chatbot() {
-  // Track if user has dismissed the chat
-  const [open, setOpen] = useState(true);
-  // Only pop up automatically on first load
-  const [firstMount, setFirstMount] = useState(true);
-  // Chat messages
+  const [open, setOpen] = useState(true); // Chatbot pops open by default
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "👋 Hey! I'm Parth's AI Assistant. Ask me anything about Parth’s work, skills, or projects.",
+      content: "👋 Hi! I'm Parth's AI Assistant.\n\nAsk me anything about Parth’s experience, projects, or skills!",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // On close, show minimized avatar after delay
-  const handleClose = () => {
-    setOpen(false);
-    setFirstMount(false);
-  };
-
-  // If chat closed, allow reopening from floating avatar
-  const handleReopen = () => {
-    setOpen(true);
-  };
-
-  // Scroll to last message
+  // Auto-scroll to bottom on new message
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (open && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages, open]);
 
-  // Animation for first mount
-  useEffect(() => {
-    if (firstMount) setOpen(true);
-  }, [firstMount]);
-
-  // Chat logic
   const sendMessage = async (msgOverride?: string) => {
     const question = msgOverride ?? input;
-    if (!question) return;
+    if (!question.trim()) return;
     const newMessages = [...messages, { role: "user", content: question }];
     setMessages(newMessages);
     setInput("");
@@ -67,178 +46,125 @@ export default function Chatbot() {
       data.error ||
       JSON.stringify(data) ||
       "Sorry, something went wrong!";
+
     setMessages([...newMessages, { role: "assistant", content: reply }]);
     setLoading(false);
   };
 
+  // If closed, show floating avatar button
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="fixed z-50 bottom-8 right-8 bg-white border-2 border-blue-500 shadow-2xl rounded-full p-2 transition hover:scale-105"
+        aria-label="Open Parth's AI Chatbot"
+        style={{ boxShadow: "0 2px 20px rgba(0,0,0,0.18)" }}
+      >
+        <img
+          src="/avatar.png"
+          alt="AI Avatar"
+          className="w-16 h-16 rounded-full border-2 border-blue-500"
+        />
+      </button>
+    );
+  }
+
   return (
-    <div className="fixed bottom-8 right-8 z-50 select-none">
-      {/* Minimized Avatar Bubble */}
-      {!open && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5, y: 40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.5, y: 40 }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        >
-          <button
-            aria-label="Open Chatbot"
-            className="rounded-full shadow-lg border-4 border-blue-500 bg-white transition-all hover:scale-105 relative"
-            style={{
-              width: 68,
-              height: 68,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onClick={handleReopen}
-          >
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></span>
-            <Image
+    <div className="fixed z-50 bottom-8 right-8">
+      <div
+        className="w-[410px] max-w-[96vw] h-[540px] bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl shadow-2xl flex flex-col border border-blue-300"
+        style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.20)" }}
+      >
+        {/* Header */}
+        <div className="flex items-center px-4 py-3 border-b border-blue-200 bg-blue-200/80 rounded-t-2xl justify-between">
+          <div className="flex items-center gap-3">
+            <img
               src="/avatar.png"
-              alt="Chatbot Avatar"
-              width={54}
-              height={54}
-              className="rounded-full"
-              priority
+              alt="AI Avatar"
+              className="w-11 h-11 rounded-full border-2 border-blue-500 bg-white"
             />
-          </button>
-        </motion.div>
-      )}
-
-      {/* Main Chat Window */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="chat-window"
-            initial={{ opacity: 0, y: 80, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 60, scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 260, damping: 24 }}
-            className="backdrop-blur-xl bg-gradient-to-br from-blue-50/90 to-white/80 border border-blue-200 rounded-3xl shadow-2xl px-0 pt-0 pb-2 max-w-full flex flex-col"
-            style={{
-              minWidth: 350,
-              maxWidth: 410,
-              minHeight: 400,
-            }}
+            <span className="font-bold text-xl text-blue-900">Parth’s AI</span>
+          </div>
+          <button
+            onClick={() => setOpen(false)}
+            className="text-xl text-blue-500 hover:bg-blue-100 rounded-full px-2 py-1 transition"
+            aria-label="Close chatbot"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 pt-3 pb-2 rounded-t-3xl border-b border-blue-100 bg-gradient-to-r from-blue-100 via-blue-50 to-white">
-              <div className="flex items-center gap-2">
-                <Image
-                  src="/avatar.png"
-                  alt="Chatbot Avatar"
-                  width={40}
-                  height={40}
-                  className="rounded-full border-2 border-blue-500 shadow"
-                  priority
-                />
-                <span className="font-bold text-blue-900 text-lg tracking-tight">
-                  Parth’s AI
-                </span>
-              </div>
-              <button
-                onClick={handleClose}
-                className="text-2xl text-gray-400 hover:text-blue-500 px-2 font-bold transition"
-                title="Close"
-              >×</button>
-            </div>
-
-            {/* Minimal Suggestions */}
-            <div className="flex gap-2 justify-center px-4 pt-3 pb-2">
-              {suggestedQuestions.map((q) => (
-                <button
-                  key={q}
-                  className="bg-blue-200/80 hover:bg-blue-400/90 text-blue-900 text-xs rounded-full px-3 py-1 font-semibold shadow transition"
-                  onClick={() => sendMessage(q)}
-                  disabled={loading}
-                  type="button"
-                >
-                  {q}
-                </button>
-              ))}
-            </div>
-            {/* Chat Area */}
-            <div className="h-52 overflow-y-auto border mx-4 p-3 rounded-xl bg-white/90 space-y-4 mb-2">
-              <AnimatePresence initial={false}>
-                {messages.map((msg, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.18, delay: 0.03 * i }}
-                    className={
-                      msg.role === "user"
-                        ? "flex justify-end items-center"
-                        : "flex items-center"
-                    }
-                  >
-                    {msg.role === "assistant" && (
-                      <Image
-                        src="/avatar.png"
-                        alt="AI Avatar"
-                        width={28}
-                        height={28}
-                        className="rounded-full border border-blue-300 mr-2"
-                      />
-                    )}
-                    <span
-                      className={
-                        msg.role === "user"
-                          ? "font-semibold text-blue-600 bg-blue-100 px-4 py-2 rounded-2xl shadow-md"
-                          : "font-semibold text-gray-800 bg-blue-50/80 px-4 py-2 rounded-2xl shadow"
-                      }
-                      style={{
-                        maxWidth: "75%",
-                        lineHeight: "1.6",
-                        fontSize: "1.02rem",
-                        letterSpacing: 0.01,
-                      }}
-                    >
-                      {msg.content}
-                    </span>
-                  </motion.div>
-                ))}
-                {loading && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-gray-500 mt-2"
-                  >
-                    Typing…
-                  </motion.div>
-                )}
-                <div ref={messagesEndRef} />
-              </AnimatePresence>
-            </div>
-            {/* Input Area */}
-            <form
-              className="flex gap-2 px-4 pb-2"
-              onSubmit={e => {
-                e.preventDefault();
-                sendMessage();
-              }}
+            ×
+          </button>
+        </div>
+        {/* Suggested Questions */}
+        <div className="flex flex-wrap gap-3 px-5 py-2">
+          {suggestedQuestions.map((q) => (
+            <button
+              key={q}
+              className="bg-blue-100 hover:bg-blue-300 text-blue-800 text-sm rounded-full px-4 py-1 shadow transition font-medium"
+              onClick={() => sendMessage(q)}
+              disabled={loading}
+              type="button"
             >
-              <input
-                className="border rounded-lg p-2 flex-1 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-                type="text"
-                value={input}
-                disabled={loading}
-                placeholder="Type your question here..."
-                onChange={e => setInput(e.target.value)}
-              />
-              <button
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-5 py-2 shadow font-bold transition"
-                disabled={loading || !input}
-                type="submit"
+              {q}
+            </button>
+          ))}
+        </div>
+        {/* Message Area */}
+        <div className="flex-1 overflow-y-auto px-4 py-2 bg-blue-50">
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={`flex gap-2 mb-4 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            >
+              {msg.role === "assistant" && (
+                <img
+                  src="/avatar.png"
+                  alt="AI"
+                  className="w-9 h-9 rounded-full border border-blue-400 bg-white flex-shrink-0"
+                />
+              )}
+              <div
+                className={`rounded-2xl px-4 py-2 shadow-md whitespace-pre-wrap
+                  ${
+                    msg.role === "user"
+                      ? "bg-blue-500 text-white ml-10"
+                      : "bg-white text-blue-900 mr-10"
+                  }
+                `}
+                style={{ maxWidth: "78%" }}
               >
-                <span className="inline-block align-middle mr-1">💬</span> Send
-              </button>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <ReactMarkdown className="prose prose-blue max-w-none">{msg.content}</ReactMarkdown>
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+        {/* Input */}
+        <form
+          className="flex gap-2 p-4 border-t border-blue-200 bg-blue-100/50 rounded-b-2xl"
+          onSubmit={e => {
+            e.preventDefault();
+            sendMessage();
+          }}
+        >
+          <input
+            className="border border-blue-300 rounded-lg p-2 flex-1 focus:ring-2 focus:ring-blue-400 outline-none text-base"
+            type="text"
+            value={input}
+            disabled={loading}
+            placeholder="Type your question here..."
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === "Enter" && !e.shiftKey) sendMessage();
+            }}
+          />
+          <button
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-6 py-2 font-semibold transition"
+            disabled={loading || !input.trim()}
+            type="submit"
+          >
+            Send
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
