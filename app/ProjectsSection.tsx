@@ -35,14 +35,18 @@ export default function ProjectsSection() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto my-12">
-      <h3 className="text-2xl font-bold mb-6 text-blue-700 dark:text-blue-300 text-center">Projects & Impact</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
+    <div className="w-full max-w-5xl mx-auto my-14">
+      <h3 className="text-2xl font-extrabold mb-2 text-blue-700 text-center">Projects & Impact</h3>
+      <p className="text-center mb-8 text-gray-600 text-sm">
+        <span className="bg-blue-50 px-3 py-1 rounded-full">Click any card to flip and see details!</span>
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-9 justify-items-center">
         {projects.map((project, idx) => (
           <motion.div
             key={project.title}
-            className="w-72 h-52 perspective"
-            whileHover={{ scale: 1.05 }}
+            className="w-80 h-60 perspective"
+            whileHover={{ scale: 1.07 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => handleFlip(idx)}
             style={{ cursor: "pointer" }}
           >
@@ -51,23 +55,23 @@ export default function ProjectsSection() {
               <motion.div
                 initial={false}
                 animate={{ rotateY: flipped[idx] ? 180 : 0 }}
-                transition={{ duration: 0.6 }}
-                className="absolute inset-0 bg-white dark:bg-gray-900 shadow-lg rounded-2xl flex flex-col justify-center items-center text-center px-6 py-4 backface-hidden"
+                transition={{ duration: 0.55 }}
+                className="absolute inset-0 bg-white dark:bg-gray-900 shadow-xl rounded-2xl flex flex-col justify-center items-center text-center px-7 py-6 backface-hidden"
                 style={{ zIndex: flipped[idx] ? 0 : 2 }}
               >
-                <span className="text-xl mb-2">{project.front}</span>
-                <span className="font-bold text-blue-700 dark:text-blue-300">{project.title}</span>
+                <span className="text-2xl mb-2">{project.front}</span>
+                <span className="font-extrabold text-blue-800 text-lg dark:text-blue-200 mb-1">{project.title}</span>
                 <span className="text-xs text-gray-400 mt-2">(Click to flip)</span>
               </motion.div>
               {/* Back */}
               <motion.div
                 initial={false}
                 animate={{ rotateY: flipped[idx] ? 0 : -180 }}
-                transition={{ duration: 0.6 }}
-                className="absolute inset-0 bg-blue-100 dark:bg-blue-900 shadow-lg rounded-2xl flex flex-col justify-center items-center text-center px-6 py-4 backface-hidden"
+                transition={{ duration: 0.55 }}
+                className="absolute inset-0 bg-blue-100 dark:bg-blue-900 shadow-xl rounded-2xl flex flex-col justify-center items-center text-center px-7 py-6 backface-hidden"
                 style={{ zIndex: flipped[idx] ? 2 : 0, transform: `rotateY(180deg)` }}
               >
-                <span className="font-semibold text-gray-800 dark:text-gray-100">{project.back}</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">{project.back}</span>
                 <span className="text-xs text-gray-600 dark:text-gray-300 mt-4">(Click to flip back)</span>
               </motion.div>
             </div>
@@ -75,7 +79,7 @@ export default function ProjectsSection() {
         ))}
       </div>
       <style>{`
-        .perspective { perspective: 1200px; }
+        .perspective { perspective: 1400px; }
         .backface-hidden { backface-visibility: hidden; }
       `}</style>
     </div>
