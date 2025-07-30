@@ -45,17 +45,17 @@ export default function Home() {
             <Image
               src="/hero.jpg"
               alt="Parth Khungar"
-              width={140}
-              height={140}
+              width={110}
+              height={110}
               priority
-              className="rounded-full shadow-lg border-4 border-blue-200"
-              style={{ width: 110, height: 110, objectFit: "cover" }}
+              className="rounded-full shadow-lg border-4 border-blue-200 object-cover"
+              style={{ width: 88, height: 88 }}
             />
           </motion.div>
           {/* Name, Tagline, Resume */}
           <div className="flex flex-col items-center sm:items-start gap-1">
             <motion.h1
-              className="text-3xl sm:text-4xl font-bold text-gray-900 text-center sm:text-left"
+              className="text-2xl sm:text-4xl font-bold text-gray-900 text-center sm:text-left"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
@@ -63,7 +63,7 @@ export default function Home() {
               Parth Khungar
             </motion.h1>
             <motion.h2
-              className="text-lg sm:text-xl text-blue-700 font-semibold mb-1"
+              className="text-base sm:text-xl text-blue-700 font-semibold mb-1"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
@@ -73,7 +73,7 @@ export default function Home() {
             <motion.a
               href="/ParthKhungarResume.pdf"
               download
-              className="mt-1 px-4 py-1 sm:px-6 sm:py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-800 transition font-semibold text-base sm:text-lg"
+              className="mt-1 px-4 py-1 sm:px-6 sm:py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-800 transition font-semibold text-sm sm:text-lg"
               whileHover={{ scale: 1.07 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0 }}
@@ -91,7 +91,7 @@ export default function Home() {
         <ProjectsSection />
 
         {/* About */}
-        <p className="max-w-xl mx-auto text-center text-gray-700 mt-2 text-base sm:text-lg">
+        <p className="max-w-lg mx-auto text-center text-gray-700 mt-2 text-sm sm:text-lg px-2">
           AI-empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
         </p>
 
@@ -117,7 +117,8 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="flex flex-wrap items-center justify-center gap-6 py-6 mt-10 w-full max-w-screen-lg mx-auto">
+      {/* Footer */}
+      <footer className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-6 py-6 mt-10 w-full max-w-screen-lg mx-auto">
         <a
           className="flex items-center gap-2 hover:underline text-blue-700"
           href="https://linkedin.com/in/parth-khungar-6a1a3217b"
@@ -128,8 +129,8 @@ export default function Home() {
             aria-hidden
             src="/globe.svg"
             alt="Globe icon"
-            width={16}
-            height={16}
+            width={18}
+            height={18}
           />
           LinkedIn
         </a>
@@ -143,12 +144,13 @@ export default function Home() {
             aria-hidden
             src="/file.svg"
             alt="File icon"
-            width={16}
-            height={16}
+            width={18}
+            height={18}
           />
           Email Me
         </a>
       </footer>
+
       <Chatbot />
     </div>
   );
