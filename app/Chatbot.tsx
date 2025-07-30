@@ -1,35 +1,54 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Minimal suggestions
 const suggestedQuestions = [
   "What is Parth’s greatest achievement?",
-  "Tell me about Parth’s product management style.",
-  "What’s a fun fact about Parth?",
-  "Describe Parth’s leadership experience.",
   "What does Parth do for fun?",
 ];
 
 export default function Chatbot() {
-  const [open, setOpen] = useState(false);
+  // Track if user has dismissed the chat
+  const [open, setOpen] = useState(true);
+  // Only pop up automatically on first load
+  const [firstMount, setFirstMount] = useState(true);
+  // Chat messages
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Hi! I'm Parth's AI Assistant. Ask me anything about Parth’s experience, projects, or skills!",
+      content: "👋 Hey! I'm Parth's AI Assistant. Ask me anything about Parth’s work, skills, or projects.",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto scroll to bottom on new messages
+  // On close, show minimized avatar after delay
+  const handleClose = () => {
+    setOpen(false);
+    setFirstMount(false);
+  };
+
+  // If chat closed, allow reopening from floating avatar
+  const handleReopen = () => {
+    setOpen(true);
+  };
+
+  // Scroll to last message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
-  const sendMessage = async (messageOverride?: string) => {
-    const question = messageOverride ?? input;
+  // Animation for first mount
+  useEffect(() => {
+    if (firstMount) setOpen(true);
+  }, [firstMount]);
+
+  // Chat logic
+  const sendMessage = async (msgOverride?: string) => {
+    const question = msgOverride ?? input;
     if (!question) return;
     const newMessages = [...messages, { role: "user", content: question }];
     setMessages(newMessages);
@@ -53,84 +72,84 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="fixed bottom-8 right-8 z-50">
-      {/* Floating Avatar Button */}
+    <div className="fixed bottom-8 right-8 z-50 select-none">
+      {/* Minimized Avatar Bubble */}
       {!open && (
-        <motion.button
-          aria-label="Open Chatbot"
-          onClick={() => setOpen(true)}
-          className="rounded-full shadow-2xl border-4 border-blue-500 bg-white hover:scale-105 transition-all relative"
-          style={{
-            width: 68,
-            height: 68,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          whileHover={{ scale: 1.1 }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, y: 40 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.5, y: 40 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
         >
-          {/* Animated glowing ring */}
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="block w-[64px] h-[64px] rounded-full bg-blue-400/30 blur-lg animate-pulse"></span>
-          </span>
-          <Image
-            src="/avatar.png"
-            alt="Chatbot Avatar"
-            width={60}
-            height={60}
-            className="rounded-full relative z-10"
-            priority
-          />
-        </motion.button>
+          <button
+            aria-label="Open Chatbot"
+            className="rounded-full shadow-lg border-4 border-blue-500 bg-white transition-all hover:scale-105 relative"
+            style={{
+              width: 68,
+              height: 68,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={handleReopen}
+          >
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></span>
+            <Image
+              src="/avatar.png"
+              alt="Chatbot Avatar"
+              width={54}
+              height={54}
+              className="rounded-full"
+              priority
+            />
+          </button>
+        </motion.div>
       )}
 
-      {/* Chat Window */}
+      {/* Main Chat Window */}
       <AnimatePresence>
         {open && (
           <motion.div
             key="chat-window"
-            initial={{ opacity: 0, y: 50, scale: 0.98 }}
+            initial={{ opacity: 0, y: 80, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="backdrop-blur-xl bg-white/80 border border-blue-100 rounded-2xl shadow-2xl p-0 max-w-full flex flex-col"
+            exit={{ opacity: 0, y: 60, scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 260, damping: 24 }}
+            className="backdrop-blur-xl bg-gradient-to-br from-blue-50/90 to-white/80 border border-blue-200 rounded-3xl shadow-2xl px-0 pt-0 pb-2 max-w-full flex flex-col"
             style={{
               minWidth: 350,
               maxWidth: 410,
-              minHeight: 440,
+              minHeight: 400,
             }}
           >
-            <div className="flex items-center justify-between px-4 py-2 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200 rounded-t-2xl border-b border-blue-100">
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 pt-3 pb-2 rounded-t-3xl border-b border-blue-100 bg-gradient-to-r from-blue-100 via-blue-50 to-white">
               <div className="flex items-center gap-2">
-                <span className="relative flex h-8 w-8">
-                  {/* Animated avatar ring */}
-                  <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-blue-400/40 opacity-75"></span>
-                  <Image
-                    src="/avatar.png"
-                    alt="Chatbot Avatar"
-                    width={32}
-                    height={32}
-                    className="rounded-full border-2 border-blue-500 z-10"
-                    priority
-                  />
-                  {/* Status dot */}
-                  <span className={`absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white ${loading ? "bg-orange-400" : "bg-green-500"}`}></span>
+                <Image
+                  src="/avatar.png"
+                  alt="Chatbot Avatar"
+                  width={40}
+                  height={40}
+                  className="rounded-full border-2 border-blue-500 shadow"
+                  priority
+                />
+                <span className="font-bold text-blue-900 text-lg tracking-tight">
+                  Parth’s AI
                 </span>
-                <span className="font-bold text-blue-900 text-lg tracking-tight">Parth’s AI</span>
               </div>
               <button
-                onClick={() => setOpen(false)}
-                className="text-2xl text-gray-500 hover:text-blue-500 px-2 font-bold transition"
+                onClick={handleClose}
+                className="text-2xl text-gray-400 hover:text-blue-500 px-2 font-bold transition"
                 title="Close"
               >×</button>
             </div>
 
-            {/* Suggested Questions */}
-            <div className="flex flex-wrap gap-2 justify-center p-3 pb-1">
+            {/* Minimal Suggestions */}
+            <div className="flex gap-2 justify-center px-4 pt-3 pb-2">
               {suggestedQuestions.map((q) => (
                 <button
                   key={q}
-                  className="bg-blue-200/80 hover:bg-blue-400/80 text-blue-900 text-xs rounded-full px-4 py-1 font-semibold shadow transition"
+                  className="bg-blue-200/80 hover:bg-blue-400/90 text-blue-900 text-xs rounded-full px-3 py-1 font-semibold shadow transition"
                   onClick={() => sendMessage(q)}
                   disabled={loading}
                   type="button"
@@ -139,8 +158,8 @@ export default function Chatbot() {
                 </button>
               ))}
             </div>
-            {/* Chat messages */}
-            <div className="h-56 overflow-y-auto border mx-3 p-3 rounded-xl bg-blue-50/70 space-y-4 mb-2">
+            {/* Chat Area */}
+            <div className="h-52 overflow-y-auto border mx-4 p-3 rounded-xl bg-white/90 space-y-4 mb-2">
               <AnimatePresence initial={false}>
                 {messages.map((msg, i) => (
                   <motion.div
@@ -148,13 +167,12 @@ export default function Chatbot() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.15, delay: 0.04 * i }}
+                    transition={{ duration: 0.18, delay: 0.03 * i }}
                     className={
                       msg.role === "user"
                         ? "flex justify-end items-center"
                         : "flex items-center"
                     }
-                    style={{ marginBottom: "0.3rem" }}
                   >
                     {msg.role === "assistant" && (
                       <Image
@@ -168,10 +186,15 @@ export default function Chatbot() {
                     <span
                       className={
                         msg.role === "user"
-                          ? "font-semibold text-blue-600 bg-blue-100 px-3 py-2 rounded-xl shadow-md"
-                          : "font-semibold text-gray-800 bg-white/90 px-3 py-2 rounded-xl shadow-md"
+                          ? "font-semibold text-blue-600 bg-blue-100 px-4 py-2 rounded-2xl shadow-md"
+                          : "font-semibold text-gray-800 bg-blue-50/80 px-4 py-2 rounded-2xl shadow"
                       }
-                      style={{ maxWidth: "75%", lineHeight: "1.7" }}
+                      style={{
+                        maxWidth: "75%",
+                        lineHeight: "1.6",
+                        fontSize: "1.02rem",
+                        letterSpacing: 0.01,
+                      }}
                     >
                       {msg.content}
                     </span>
@@ -189,15 +212,16 @@ export default function Chatbot() {
                 <div ref={messagesEndRef} />
               </AnimatePresence>
             </div>
+            {/* Input Area */}
             <form
-              className="flex gap-2 px-3 pb-4"
+              className="flex gap-2 px-4 pb-2"
               onSubmit={e => {
                 e.preventDefault();
                 sendMessage();
               }}
             >
               <input
-                className="border rounded-lg p-2 flex-1 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                className="border rounded-lg p-2 flex-1 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
                 type="text"
                 value={input}
                 disabled={loading}
@@ -209,7 +233,7 @@ export default function Chatbot() {
                 disabled={loading || !input}
                 type="submit"
               >
-                Send
+                <span className="inline-block align-middle mr-1">💬</span> Send
               </button>
             </form>
           </motion.div>
