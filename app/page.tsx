@@ -92,8 +92,8 @@ export default function Home() {
         <SkillsBar />
         {/* Projects */}
         <ProjectsSection />
-        {/* Chatbot */}
-        <Chatbot />
+        
+        
 
         {/* Share Button */}
         <div className="flex justify-center my-6">
@@ -150,6 +150,7 @@ export default function Home() {
           Email Me
         </a>
       </footer>
+      <Chatbot />
     </div>
   );
 }
