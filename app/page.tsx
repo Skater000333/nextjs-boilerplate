@@ -10,93 +10,93 @@ import Timeline from "./Timeline";
 export default function Home() {
   return (
     <div
-      className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20"
-      style={{
-        background: "linear-gradient(135deg, #f0f6ff 0%, #c3dafe 100%)",
-        minHeight: "100vh",
-        position: "relative"
-      }}
+      className="font-sans min-h-screen flex flex-col items-center bg-gradient-to-br from-blue-50 to-blue-100 relative"
     >
       {/* Animated SVG Blobs */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <svg width="100%" height="100%">
-          <circle cx="30%" cy="30%" r="180" fill="#a7f3d0" fillOpacity="0.28">
-            <animate attributeName="cy" values="30%;40%;30%" dur="7s" repeatCount="indefinite"/>
+          <circle cx="30%" cy="30%" r="120" fill="#a7f3d0" fillOpacity="0.23">
+            <animate attributeName="cy" values="30%;40%;30%" dur="7s" repeatCount="indefinite" />
           </circle>
-          <circle cx="70%" cy="70%" r="250" fill="#93c5fd" fillOpacity="0.19">
-            <animate attributeName="cy" values="70%;65%;70%" dur="8s" repeatCount="indefinite"/>
+          <circle cx="70%" cy="70%" r="200" fill="#93c5fd" fillOpacity="0.17">
+            <animate attributeName="cy" values="70%;65%;70%" dur="8s" repeatCount="indefinite" />
           </circle>
-          <circle cx="80%" cy="15%" r="120" fill="#818cf8" fillOpacity="0.13">
-            <animate attributeName="cy" values="15%;25%;15%" dur="6s" repeatCount="indefinite"/>
+          <circle cx="80%" cy="15%" r="90" fill="#818cf8" fillOpacity="0.10">
+            <animate attributeName="cy" values="15%;25%;15%" dur="6s" repeatCount="indefinite" />
           </circle>
         </svg>
       </div>
 
-      {/* MAIN CONTENT */}
-      <main className="flex flex-col gap-10 row-start-2 items-center w-full">
-        {/* HERO + ABOUT SECTION */}
-        <section
-          id="about"
-          className="w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10 mt-6 mb-4"
+      <main className="w-full max-w-screen-lg px-2 sm:px-8 flex flex-col gap-8">
+        {/* Hero Section */}
+        <motion.div
+          initial={{ opacity: 0, y: -40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="flex flex-col sm:flex-row items-center sm:items-end gap-4 pt-8 sm:pt-14"
         >
-          {/* Left: Photo */}
+          {/* Avatar */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             className="flex-shrink-0"
           >
-            <div className="rounded-full overflow-hidden border-4 border-blue-100 shadow-xl w-48 h-48 bg-white flex items-center justify-center">
-              <Image
-                src="/hero.jpg"
-                alt="Parth Khungar"
-                width={200}
-                height={200}
-                className="object-cover w-full h-full"
-                priority
-              />
-            </div>
+            <Image
+              src="/hero.jpg"
+              alt="Parth Khungar"
+              width={140}
+              height={140}
+              priority
+              className="rounded-full shadow-lg border-4 border-blue-200"
+              style={{ width: 110, height: 110, objectFit: "cover" }}
+            />
           </motion.div>
-          {/* Right: Headline + About Me */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex-1"
-          >
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Hi, I’m Parth <span className="text-3xl">👋</span>
-            </h1>
-            <p className="text-lg text-gray-700 font-medium mb-3 max-w-xl">
-              <span className="font-bold text-blue-700">Product Manager</span> who builds smarter, data-driven solutions. I lead cross-functional teams, deliver real-world impact, and bring a sports champion’s focus to every project.
-            </p>
-            <div className="rounded-2xl bg-blue-50/80 p-4 shadow border-l-4 border-blue-400 max-w-lg mb-2">
-              <div className="flex items-center gap-2 mb-1 text-blue-700 font-semibold text-lg">
-                <span>✨ About Me</span>
-              </div>
-              <ul className="list-disc pl-5 text-gray-800 text-base leading-relaxed">
-                <li>4+ years PM & tech experience across pharma, utilities, government</li>
-                <li>AI, analytics, and product design enthusiast</li>
-                <li>National gold medalist & state hockey captain 🏒</li>
-                <li>Mentor, builder, and believer in fun at work</li>
-              </ul>
-            </div>
-          </motion.div>
-        </section>
+          {/* Name, Tagline, Resume */}
+          <div className="flex flex-col items-center sm:items-start gap-1">
+            <motion.h1
+              className="text-3xl sm:text-4xl font-bold text-gray-900 text-center sm:text-left"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+            >
+              Parth Khungar
+            </motion.h1>
+            <motion.h2
+              className="text-lg sm:text-xl text-blue-700 font-semibold mb-1"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.0 }}
+            >
+              Building Smarter Products
+            </motion.h2>
+            <motion.a
+              href="/ParthKhungarResume.pdf"
+              download
+              className="mt-1 px-4 py-1 sm:px-6 sm:py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-800 transition font-semibold text-base sm:text-lg"
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 1.3 }}
+            >
+              Download Resume
+            </motion.a>
+          </div>
+        </motion.div>
 
-        {/* Timeline */}
         <Timeline />
-        {/* Fun Facts */}
         <FunFactsCarousel />
-        {/* Skills */}
         <SkillsBar />
-        {/* Projects */}
         <ProjectsSection />
-        
-        
+
+        {/* About */}
+        <p className="max-w-xl mx-auto text-center text-gray-700 mt-2 text-base sm:text-lg">
+          AI-empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
+        </p>
 
         {/* Share Button */}
-        <div className="flex justify-center my-6">
+        <div className="flex justify-center my-5">
           <button
             onClick={() => {
               if (navigator.share) {
@@ -110,17 +110,16 @@ export default function Home() {
                 alert("Link copied to clipboard!");
               }
             }}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-full shadow transition"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-full shadow transition text-sm sm:text-base"
           >
             🔗 Share This Page
           </button>
         </div>
       </main>
 
-      {/* FOOTER */}
-      <footer className="row-start-3 flex gap-8 flex-wrap items-center justify-center mt-10">
+      <footer className="flex flex-wrap items-center justify-center gap-6 py-6 mt-10 w-full max-w-screen-lg mx-auto">
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4 text-blue-700"
+          className="flex items-center gap-2 hover:underline text-blue-700"
           href="https://linkedin.com/in/parth-khungar-6a1a3217b"
           target="_blank"
           rel="noopener noreferrer"
@@ -135,7 +134,7 @@ export default function Home() {
           LinkedIn
         </a>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4 text-blue-700"
+          className="flex items-center gap-2 hover:underline text-blue-700"
           href="mailto:parthkhungar33@gmail.com"
           target="_blank"
           rel="noopener noreferrer"
