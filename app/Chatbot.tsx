@@ -131,7 +131,9 @@ export default function Chatbot() {
                 `}
                 style={{ maxWidth: "78%" }}
               >
-                <ReactMarkdown className="prose prose-blue max-w-none">{msg.content}</ReactMarkdown>
+                <div className="prose prose-blue max-w-none">
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                </div>
               </div>
             </div>
           ))}
