@@ -4,14 +4,35 @@ import Chatbot from "./Chatbot";
 import { motion } from "framer-motion";
 import FunFactsCarousel from "./FunFactsCarousel";
 import SkillsBar from "./SkillsBar";
-import ProjectsSection from "./ProjectsSection";
 import Timeline from "./Timeline";
+
+const highlights = [
+  {
+    title: "Work Highlights",
+    summary: "AI/ML for pharma, product launches, and cross-functional leadership. Delivered systems that automate 6+ depts, cut costs 25%, and drive analytics adoption for 10+ clients.",
+    link: "/work",
+    emoji: "💼",
+    button: "See Work",
+  },
+  {
+    title: "Side Projects",
+    summary: "Developed tiffin services, Android malware research, data-driven dashboards, and more. Always building and experimenting beyond 9-to-5.",
+    link: "/side-projects",
+    emoji: "🚀",
+    button: "See Side Projects",
+  },
+  {
+    title: "Hobbies & Sports",
+    summary: "20+ national medals in skating, roller hockey team captain, community teaching, and event ops. Passionate about sports and impact.",
+    link: "/hobbies",
+    emoji: "🏒",
+    button: "See Hobbies",
+  }
+];
 
 export default function Home() {
   return (
-    <div
-      className="font-sans min-h-screen flex flex-col items-center bg-gradient-to-br from-blue-50 to-blue-100 relative"
-    >
+    <div className="font-sans min-h-screen flex flex-col items-center bg-gradient-to-br from-blue-50 to-blue-100 relative">
       {/* Animated SVG Blobs */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <svg width="100%" height="100%">
@@ -88,7 +109,23 @@ export default function Home() {
         <Timeline />
         <FunFactsCarousel />
         <SkillsBar />
-        <ProjectsSection />
+
+        {/* Highlights Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-2 mb-5">
+          {highlights.map((item) => (
+            <div key={item.title} className="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-2 items-center text-center border border-blue-100">
+              <div className="text-3xl sm:text-4xl">{item.emoji}</div>
+              <div className="font-bold text-lg sm:text-xl mb-2">{item.title}</div>
+              <div className="text-gray-700 text-sm sm:text-base mb-3">{item.summary}</div>
+              <a
+                href={item.link}
+                className="inline-block mt-auto px-4 py-1 bg-blue-600 text-white rounded-full shadow hover:bg-blue-800 transition font-semibold text-sm sm:text-base"
+              >
+                {item.button}
+              </a>
+            </div>
+          ))}
+        </div>
 
         {/* About */}
         <p className="max-w-lg mx-auto text-center text-gray-700 mt-2 text-sm sm:text-lg px-2">
