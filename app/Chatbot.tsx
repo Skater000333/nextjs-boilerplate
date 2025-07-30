@@ -8,7 +8,7 @@ const suggestedQuestions = [
 ];
 
 export default function Chatbot() {
-  const [open, setOpen] = useState(true); // Open on load
+  const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -27,6 +27,11 @@ export default function Chatbot() {
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, []);
+
+  // On desktop: open on mount. On mobile: closed on mount.
+  useEffect(() => {
+    setOpen(!isMobile ? true : false);
+  }, [isMobile]);
 
   // Scroll to last message
   useEffect(() => {
@@ -60,7 +65,33 @@ export default function Chatbot() {
     setLoading(false);
   };
 
-  // If closed, show floating avatar button
+  // Nudge bubble for mobile
+  if (isMobile && !open) {
+    return (
+      <div className="fixed z-50 bottom-4 right-3 flex items-end gap-2">
+        <div
+          className="bg-blue-600 text-white rounded-2xl px-4 py-2 shadow-md text-sm animate-bounce cursor-pointer"
+          onClick={() => setOpen(true)}
+          style={{ maxWidth: 180 }}
+        >
+          👋 Hi! Need help?
+        </div>
+        <button
+          onClick={() => setOpen(true)}
+          className="bg-white/80 backdrop-blur border-2 border-blue-400 shadow-2xl rounded-full p-1 transition hover:scale-105"
+          aria-label="Open Parth's AI Chatbot"
+        >
+          <img
+            src="/avatar.png"
+            alt="AI Avatar"
+            className="w-16 h-16 rounded-full border-2 border-blue-500"
+          />
+        </button>
+      </div>
+    );
+  }
+
+  // Avatar button when closed (desktop/mobile)
   if (!open) {
     return (
       <button
@@ -78,6 +109,7 @@ export default function Chatbot() {
     );
   }
 
+  // Chat window (mobile/desktop)
   return (
     <div
       className={`
