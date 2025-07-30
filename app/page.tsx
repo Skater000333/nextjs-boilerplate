@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import FunFactsCarousel from "./FunFactsCarousel";
 import SkillsBar from "./SkillsBar";
 import ProjectsSection from "./ProjectsSection";
+import Timeline from "./Timeline";
 
 export default function Home() {
   return (
@@ -31,75 +32,92 @@ export default function Home() {
         </svg>
       </div>
 
-      <main className="flex flex-col gap-8 row-start-2 items-center">
-        {/* Animated Hero Section */}
-        <motion.div
-          initial={{ opacity: 0, y: -40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="flex flex-col items-center gap-2"
+      {/* MAIN CONTENT */}
+      <main className="flex flex-col gap-10 row-start-2 items-center w-full">
+        {/* HERO + ABOUT SECTION */}
+        <section
+          id="about"
+          className="w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10 mt-6 mb-4"
         >
-          {/* Animated Hero Image */}
+          {/* Left: Photo */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            className="flex-shrink-0"
           >
-            <Image
-              src="/hero.jpg"
-              alt="Parth Khungar"
-              width={180}
-              height={180}
-              priority
-              className="rounded-full shadow-lg mb-2"
-            />
+            <div className="rounded-full overflow-hidden border-4 border-blue-100 shadow-xl w-48 h-48 bg-white flex items-center justify-center">
+              <Image
+                src="/hero.jpg"
+                alt="Parth Khungar"
+                width={200}
+                height={200}
+                className="object-cover w-full h-full"
+                priority
+              />
+            </div>
           </motion.div>
-
-          {/* Animated Name */}
-          <motion.h1
-            className="text-4xl font-bold text-center text-gray-900"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
+          {/* Right: Headline + About Me */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="flex-1"
           >
-            Parth Khungar
-          </motion.h1>
-          {/* Animated Tagline */}
-          <motion.h2
-            className="text-xl text-center text-blue-700 font-semibold mb-4"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.0 }}
-          >
-            Building Smarter Products
-          </motion.h2>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              Hi, I’m Parth <span className="text-3xl">👋</span>
+            </h1>
+            <p className="text-lg text-gray-700 font-medium mb-3 max-w-xl">
+              <span className="font-bold text-blue-700">Product Manager</span> who builds smarter, data-driven solutions. I lead cross-functional teams, deliver real-world impact, and bring a sports champion’s focus to every project.
+            </p>
+            <div className="rounded-2xl bg-blue-50/80 p-4 shadow border-l-4 border-blue-400 max-w-lg mb-2">
+              <div className="flex items-center gap-2 mb-1 text-blue-700 font-semibold text-lg">
+                <span>✨ About Me</span>
+              </div>
+              <ul className="list-disc pl-5 text-gray-800 text-base leading-relaxed">
+                <li>4+ years PM & tech experience across pharma, utilities, government</li>
+                <li>AI, analytics, and product design enthusiast</li>
+                <li>National gold medalist & state hockey captain 🏒</li>
+                <li>Mentor, builder, and believer in fun at work</li>
+              </ul>
+            </div>
+          </motion.div>
+        </section>
 
-          {/* Animated Resume Button */}
-          <motion.a
-            href="/ParthKhungarResume.pdf"
-            download
-            className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-800 transition font-semibold"
-            whileHover={{ scale: 1.07 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 1.3 }}
-          >
-            Download Resume
-          </motion.a>
-        </motion.div>
-
+        {/* Timeline */}
+        <Timeline />
+        {/* Fun Facts */}
         <FunFactsCarousel />
+        {/* Skills */}
         <SkillsBar />
+        {/* Projects */}
         <ProjectsSection />
+        {/* Chatbot */}
         <Chatbot />
 
-        {/* Short About */}
-        <p className="max-w-xl text-center text-gray-700 mt-4">
-          AI-empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
-        </p>
+        {/* Share Button */}
+        <div className="flex justify-center my-6">
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: "Parth Khungar Portfolio",
+                  text: "Check out Parth Khungar's AI-powered portfolio!",
+                  url: window.location.href,
+                });
+              } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert("Link copied to clipboard!");
+              }
+            }}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-full shadow transition"
+          >
+            🔗 Share This Page
+          </button>
+        </div>
       </main>
 
+      {/* FOOTER */}
       <footer className="row-start-3 flex gap-8 flex-wrap items-center justify-center mt-10">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4 text-blue-700"
