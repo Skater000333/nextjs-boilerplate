@@ -1,76 +1,90 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
+import Chatbot from "./Chatbot";
 import { motion } from "framer-motion";
+import FunFactsCarousel from "./FunFactsCarousel";
+import SkillsBar from "./SkillsBar";
+import ProjectsSection from "./ProjectsSection";
 
 export default function Home() {
   return (
-    <div className="max-w-3xl mx-auto px-3 sm:px-8 py-10">
-      {/* Hero Section */}
-      <section className="flex flex-col sm:flex-row gap-6 items-center mb-12">
-        <Image
-          src="/hero.jpg"
-          alt="Parth Khungar"
-          width={110}
-          height={110}
-          className="rounded-full shadow-lg border-4 border-blue-100"
-          style={{ objectFit: "cover" }}
-        />
-        <div className="flex flex-col items-center sm:items-start gap-2">
-          <h1 className="text-3xl font-bold text-gray-900">Parth Khungar</h1>
-          <h2 className="text-lg text-blue-700 font-semibold">Building Smarter Products</h2>
-          <a
-            href="/ParthKhungarResume.pdf"
-            download
-            className="mt-2 px-5 py-1 bg-blue-600 text-white rounded-full shadow hover:bg-blue-800 transition font-semibold text-base"
-          >
-            Download Resume
-          </a>
-        </div>
-      </section>
+    <div className="min-h-screen w-full bg-[#f7f9fa] flex flex-col">
+      <main className="max-w-3xl w-full mx-auto px-3 sm:px-8 py-8 flex flex-col gap-10">
+        {/* Hero Section */}
+        <section className="flex flex-col sm:flex-row items-center gap-6 pb-4">
+          <div className="flex-shrink-0">
+            <Image
+              src="/hero.jpg"
+              alt="Parth Khungar"
+              width={110}
+              height={110}
+              priority
+              className="rounded-full border-2 border-neutral-200 shadow"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+          <div className="flex flex-col items-center sm:items-start gap-1">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-1 text-left">Parth Khungar</h1>
+            <h2 className="text-lg sm:text-xl text-[#3864a8] font-semibold mb-2 text-left">Building Smarter Products</h2>
+            <a
+              href="/ParthKhungarResume.pdf"
+              download
+              className="bg-[#3864a8] text-white px-5 py-2 rounded-full shadow hover:bg-[#244065] font-semibold text-base transition"
+            >
+              Download Resume
+            </a>
+          </div>
+        </section>
 
-      {/* Highlights */}
-      <section className="space-y-10">
-        {/* Work Section Highlight */}
-        <div className="bg-white shadow rounded-xl p-6 flex flex-col sm:flex-row justify-between items-center">
-          <div>
-            <h3 className="text-xl font-bold mb-2 text-blue-800">Work Projects</h3>
-            <ul className="list-disc ml-6 mb-2 text-gray-700">
-              <li>AI-powered Inventory Management at PharmaSecure</li>
-              <li>Real-time Counterfeit Detection Platform</li>
-            </ul>
-            <Link href="/work" className="text-blue-600 hover:underline font-semibold">
-              See full work experience →
-            </Link>
+        {/* Project Highlights (show only a few with See More) */}
+        <section className="bg-white rounded-xl shadow-md px-6 py-6 mb-3 border border-neutral-100">
+          <h3 className="text-lg font-bold text-neutral-800 mb-4 pl-1">Work Project Highlights</h3>
+          <ProjectsSection highlightsOnly={true} />
+          <div className="mt-5 text-right">
+            <a
+              href="/work"
+              className="text-[#3864a8] font-semibold hover:underline underline-offset-4 transition"
+            >
+              See all work projects &rarr;
+            </a>
           </div>
+        </section>
+
+        {/* Fun Facts, Skills, About */}
+        <section className="bg-white rounded-xl shadow-md px-6 py-5 border border-neutral-100">
+          <FunFactsCarousel />
+        </section>
+        <section className="bg-white rounded-xl shadow-md px-6 py-5 border border-neutral-100">
+          <SkillsBar />
+        </section>
+
+        {/* About/Blurb */}
+        <p className="max-w-2xl mx-auto text-left text-neutral-700 text-base sm:text-lg px-2">
+          AI-empowered Product Manager with proven expertise in building data-driven solutions, leading cross-functional teams, and creating real-world impact across pharma, utilities, and government sectors. Sports lover & tech enthusiast.
+        </p>
+
+        {/* Share Button */}
+        <div className="flex justify-center my-4">
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: "Parth Khungar Portfolio",
+                  text: "Check out Parth Khungar's AI-powered portfolio!",
+                  url: window.location.href,
+                });
+              } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert("Link copied to clipboard!");
+              }
+            }}
+            className="bg-[#3864a8] hover:bg-[#244065] text-white font-semibold py-2 px-5 rounded-full shadow transition text-sm sm:text-base"
+          >
+            🔗 Share This Page
+          </button>
         </div>
-        {/* Side Projects Section Highlight */}
-        <div className="bg-white shadow rounded-xl p-6 flex flex-col sm:flex-row justify-between items-center">
-          <div>
-            <h3 className="text-xl font-bold mb-2 text-blue-800">Side Projects</h3>
-            <ul className="list-disc ml-6 mb-2 text-gray-700">
-              <li>Tiffin Service Platform for Local Vendors</li>
-              <li>Android Malware Detection Research</li>
-            </ul>
-            <Link href="/side-projects" className="text-blue-600 hover:underline font-semibold">
-              See all side projects →
-            </Link>
-          </div>
-        </div>
-        {/* Get to Know Parth Section Highlight */}
-        <div className="bg-white shadow rounded-xl p-6 flex flex-col sm:flex-row justify-between items-center">
-          <div>
-            <h3 className="text-xl font-bold mb-2 text-blue-800">Get to Know Parth</h3>
-            <ul className="list-disc ml-6 mb-2 text-gray-700">
-              <li>National Gold Medalist in Skating</li>
-              <li>Community Educator & Mentor</li>
-            </ul>
-            <Link href="/get-to-know-parth" className="text-blue-600 hover:underline font-semibold">
-              More about Parth →
-            </Link>
-          </div>
-        </div>
-      </section>
+      </main>
+      <Chatbot />
     </div>
   );
 }
